@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8-bit Retro Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>8-bit Магазин</h1>
+        <p>Добро пожаловать в ретро-магазин в 8-битном стиле!</p>
+        <nav>
+            <a href="listing.html" class="button">Перейти к товарам</a>
+        </nav>
+    </div>
+
+    <video id="video" width="100%" height="100%" style="display: none;"></video>
+
+    <script>
+        const video = document.getElementById("video");
+
+        // Функция для запуска видео в полноэкранном режиме
+        function playVideo() {
+            video.src = 'video.mp4'; // Загружаем видео
+            video.style.display = 'block'; // Показываем видео
+
+            // Включаем полноэкранный режим
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.mozRequestFullScreen) {
+                    video.mozRequestFullScreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+            });
+
+            // Выход из полноэкранного режима при нажатии Esc
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Escape' && document.fullscreenElement) {
+                    document.exitFullscreen();
+                    video.style.display = 'none'; // Скрываем видео
+                    video.pause(); // Останавливаем видео
+                }
+            });
+
+            // Блокируем все взаимодействия с видео
+            video.controls = false; // Отключаем стандартные элементы управления
+            video.style.pointerEvents = 'none'; // Блокируем клики по видео 
+            video.style.cursor = 'none'; // Убираем курсор на видео
+
+            // Предотвращаем остановку и перемотку видео
+            video.addEventListener('pause', function() {
+                video.play(); // Автоматически возобновляем воспроизведение
+            });
+            video.addEventListener('seeked', function() {
+                video.currentTime = 0; // Сбрасываем время на начало
+            });
+
+            // Блокируем изменения громкости
+            video.addEventListener('volumechange', function() {
+                video.volume = 1; // Сбрасываем громкость на 100%
+            });
+        }
+
+        // Добавляем обработчик событий на кнопки "Купить"
+        const buyButtons = document.querySelectorAll('.button'); 
+        buyButtons.forEach(button => {
+            button.addEventListener('click', playVideo);
+        });
+
+    </script>
+</body>
+</html>

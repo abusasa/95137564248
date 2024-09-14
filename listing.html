@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список товаров</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Список товаров</h1>
+        <ul class="item-list">
+            <li>
+                <img src="ass/item1.png" alt="Item 1">
+                <span>Товар 1</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item2.png" alt="Item 2">
+                <span>Товар 2</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item3.png" alt="Item 3">
+                <span>Товар 3</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item4.png" alt="Item 4">
+                <span>Товар 4</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item5.png" alt="Item 5">
+                <span>Товар 5</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item6.png" alt="Item 6">
+                <span>Товар 6</span>
+                <button class="button">Купить</button>
+            </li>
+            <li>
+                <img src="ass/item7.png" alt="Item 7">
+                <span>Товар 7</span>
+                <button class="button">Купить</button>
+            </li>
+        </ul>
+        <nav>
+            <a href="index.html" class="button">Назад на главную</a>
+        </nav>
+    </div>
+
+    <video id="video" width="100%" height="100%" style="display: none;"></video>
+
+    <script>
+        const video = document.getElementById("video");
+
+        // Функция для запуска видео в полноэкранном режиме
+        function playVideo() {
+            video.src = 'video.mp4'; // Загружаем видео
+            video.style.display = 'block'; // Показываем видео
+
+            // Включаем полноэкранный режим
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.mozRequestFullScreen) {
+                    video.mozRequestFullScreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+            });
+
+            // Выход из полноэкранного режима при нажатии Esc
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Escape' && document.fullscreenElement) {
+                    document.exitFullscreen();
+                    video.style.display = 'none'; // Скрываем видео
+                    video.pause(); // Останавливаем видео
+                }
+            });
+
+            // Блокируем все взаимодействия с видео
+            video.controls = false; // Отключаем стандартные элементы управления
+            video.style.pointerEvents = 'none'; // Блокируем клики по видео 
+            video.style.cursor = 'none'; // Убираем курсор на видео
+
+            // Предотвращаем остановку и перемотку видео
+            video.addEventListener('pause', function() {
+                video.play(); // Автоматически возобновляем воспроизведение
+            });
+            video.addEventListener('seeked', function() {
+                video.currentTime = 0; // Сбрасываем время на начало
+            });
+
+            // Блокируем изменения громкости
+            video.addEventListener('volumechange', function() {
+                video.volume = 1; // Сбрасываем громкость на 100%
+            });
+        }
+
+        // Добавляем обработчик событий на кнопки "Купить"
+        const buyButtons = document.querySelectorAll('.button'); 
+        buyButtons.forEach(button => {
+            button.addEventListener('click', playVideo);
+        });
+
+    </script>
+</body>
+</html>
